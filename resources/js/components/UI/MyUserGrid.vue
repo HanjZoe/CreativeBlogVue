@@ -1,65 +1,90 @@
 <template>
-    <div class="col-md-6">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 mb-3">
 
+                <my-popup v-model:show = "this.CreateElementVisible">
+                    <create-user v-model:roles = "this.roles"
+                        @store = "storeUser"
+                        @show = "hidenCreate"
+                    />
+                </my-popup>
 
-        <div class="card">
-            <!-- /.card-header -->
-            <div class="card-body p-0">
+                <a href="#" @click.prevent="showCreate" type="button" class="btn btn-block btn-primary">Добавить</a>
 
-                <a href="#" @click.prevent="">Создать новую категорию</a>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th style="width: 10px">id</th>
-                        <th>Имя пользователя</th>
-                        <th>Email</th>
-                        <th>Дата создания</th>
-                        <th style="width: 40px">Действия</th>
-                    </tr>
-                    </thead>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                            <tr>
+                        <th class="text-center">id</th>
+                        <th class="text-center">Имя пользователя</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Дата создания</th>
+                        <th colspan="3" class="text-center">Действия</th>
+                            </tr>
+                            </thead>
                     <tbody v-for="user in users">
                     <tr :class="showEdit(user.id) ? 'd-none' : ''">
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.created_at }}</td>
-                        <td>
+                        <td class="text-center">{{ user.id }}</td>
+                        <td class="text-center">{{ user.name }}</td>
+                        <td class="text-center">{{ user.email }}</td>
+                        <td class="text-center">{{ user.created_at }}</td>
+                        <td class="text-center">
                             <my-popup v-model:show = "CreatePostVisible"><show-user :user="userSelect" @remove ="deleteUser(id)"  @show = "hidenDialog" /></my-popup>
-                            <a href="#" @click.prevent="ShowDialog(user)">Показать</a>
-                            <a href="#" @click.prevent="changeEditUserId(user.id,user.role)">Изменить</a>
-                            <a href="#" @click.prevent="deleteUser(user.id)">Удалить</a>
+                            <a href="#" @click.prevent="ShowDialog(user)"><i class="fas fa-eye"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" @click.prevent="changeEditUserId(user.id,user.role)"class="text-success" ><i class="fas fa-pen"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" @click.prevent="deleteUser(user.id)"><i class="far fa-trash-alt text-danger"></i></a>
                         </td>
                     </tr>
 
                     <tr :class="showEdit(user.id) ? '' : 'd-none'">
-                        <td>{{ user.id }}</td>
-                        <td>
+                        <td class="text-center">{{ user.id }}</td>
+                        <td class="text-center">
                             <my-input :placeholder="user.name" v-model="newName"/>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <my-input :placeholder="user.email" v-model="newEmail"/>
                         </td>
-                        <td>{{ user.created_at }}</td>
-                        <td>
+                        <td class="text-center">{{ user.created_at }}</td>
+                        <td class="text-center">
                             <select v-model="selectedRole">
                                 <option v-for="(rl,id) in roles " :key="id" :value="id"
                                         >{{ rl }}
                                 </option>
                             </select>
-                            <div class="d-flex justify-content-between">
-                                <a href="#" @click.prevent="editUser(user.id, true, newName, newEmail, selectedRole)">OK</a>
-                                <a href="#" @click.prevent="editUser(user.id, false,newName, newEmail, selectedRole)">NeOK</a>
-                            </div>
+                        </td>
+                        <td class="text-center">
+                                <a href="#" @click.prevent="editUser(user.id, true, newName, newEmail, selectedRole)"class="text-success" ><i class="fas fa-pen"></i></a>
+                    </td>
+                        <td class="text-center">
+                                <a href="#" @click.prevent="editUser(user.id, false,newName, newEmail, selectedRole)"><i class="fas fa-ban text-danger"></i></a>
                         </td>
                     </tr>
 
                     </tbody>
-                </table>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-    </div>
+        <div>
+
+
+        </div><!-- /.container-fluid -->
+    </div><!-- /.container-fluid -->
 </template>
 
 <script>
@@ -82,6 +107,7 @@ export default {
             selectedRole: null,
             CreatePostVisible: false,
             userSelect:null,
+            CreateElementVisible: false,
 
         }
     },
@@ -115,6 +141,15 @@ export default {
         },
         deleteUser(id){
             this.$emit('remove', id)
+        },
+        storeUser(email, name,role){
+            this.$emit('store', email,name,role)
+        },
+        hidenCreate(){
+            this.CreateElementVisible = false
+        },
+        showCreate(){
+            this.CreateElementVisible = true
         }
     },
     name: "MyUserGrid"

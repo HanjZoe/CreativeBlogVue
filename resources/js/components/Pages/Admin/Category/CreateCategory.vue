@@ -1,10 +1,10 @@
 <template>
     <div>
-    <title>Название категории</title>
+    <label>Название категории</label>
     <my-input :placeholder="placeholder" v-model="newTitle"/>
-        <div class="btn">
-    <button  @click.prevent="">ОК</button>
-            </div>
+    </div>
+    <div class="btni">
+        <button :disabled = "!isDisabled" @click.prevent="storeCategory(newTitle)"  class="btn btn-primary">Добавить</button>
     </div>
 </template>
 
@@ -17,13 +17,29 @@ export default {
             placeholder: 'Название категории',
             newTitle: null,
         }
+    },
+    emits: ['store', 'show'],
+    methods: {
+        storeCategory(newTitle){
+            this.$emit('show')
+            this.$emit('store', newTitle)
+        },
+
+    },
+    computed:{
+        isDisabled(){
+            return this.newTitle
+        }
     }
+
+
 }
 </script>
 
 <style scoped>
-.btn{
+.btni{
     position: relative;
-    left: 80%;
+    left: 73%;
+    padding-top: 18px;
 }
 </style>

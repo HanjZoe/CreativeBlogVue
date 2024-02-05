@@ -29,6 +29,7 @@
                         <a href="{{route('admin.category.create')}}" type="button" class="btn btn-block btn-primary">Добавить</a>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-6">
                         <div class="card">
@@ -50,6 +51,7 @@
                                             <td class="text-center">{{$category->id}}</td>
                                             <td class="text-center">{{$category->title}}</td>
                                             <td class="text-center">{{$category->created_at}}</td>
+
                                             <td class="text-center"><a
                                                     href=" {{route('admin.category.show',$category->id)}}"><i
                                                         class="fas fa-eye"></i></a></td>
@@ -57,6 +59,7 @@
                                                     href="{{route('admin.category.edit',$category->id)}}"
                                                     class="text-success"><i class="fas fa-pen"></i></a></td>
                                             <td class="text-center">
+
                                                 <form method="POST"
                                                       action="{{route('admin.category.destroy',$category->id)}}">
                                                     @csrf

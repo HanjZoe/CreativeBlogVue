@@ -10,13 +10,10 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
-      return view('Vue.Admin.User.Index');
-    }
-    public function index(){
         $users = User::all();
         $roles = User::getRoles();
-//        return compact('users')->toJson();
-    return compact('users','roles');
-
+//        return response()->json($users,$roles);
+//        //return compact('users')->toJson();
+        return compact('users','roles');
     }
 }

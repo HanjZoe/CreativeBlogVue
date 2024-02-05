@@ -17,3 +17,31 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['namespace' => 'Post', 'prefix' => 'posts'], function () {
+    Route::group(['namespace' => 'Like', 'prefix'=>'{post}/Alikes'], function (){
+        Route::post('/','StoreController')->name('post.Alike.store');
+    });
+});
+Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function(){
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+        Route::group(['namespace' => 'User','prefix' => 'users'],function (){
+            Route::get('/','IndexController')->name('vue.admin.user.index');
+            Route::delete('/{user}','DeleteController')->name('vue.admin.user.delete');
+            Route::patch('/{user}','UpdateController')->name('vue.admin.user.update');
+            Route::post('/', 'StoreController')->name('vue.admin.user.store');
+        });
+        Route::group(['namespace' => 'Category','prefix' => 'category'],function (){
+            Route::get('/','IndexController')->name('vue.admin.category.index');
+            Route::delete('/{category}','DeleteController')->name('vue.admin.category.delete');
+            Route::patch('/{category}','UpdateController')->name('vue.admin.category.update');
+            Route::post('/', 'StoreController')->name('vue.admin.category.store');
+        });
+        Route::group(['namespace' => 'Tag','prefix' => 'tag'],function (){
+            Route::get('/','IndexController')->name('vue.admin.tag.index');
+            Route::delete('/{tag}','DeleteController')->name('vue.admin.tag.delete');
+            Route::patch('/{tag}','UpdateController')->name('vue.admin.tag.update');
+            Route::post('/', 'StoreController')->name('vue.admin.tag.store');
+        });
+    });
+});

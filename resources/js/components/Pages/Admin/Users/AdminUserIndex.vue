@@ -1,16 +1,35 @@
 <template>
-<div>
-
-    <my-nav-bar></my-nav-bar>
     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Пользователи</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                            <li class="breadcrumb-item active">Пользователи</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
         <my-user-grid
             :users="users"
             :roles="roles"
             @remove= "deleteUser"
             @update = "updateUser"
+            @store = "storeUser"
             ></my-user-grid>
+        </section>
+        <!-- /.content -->
     </div>
-</div>
 </template>
 
 <script>
@@ -28,6 +47,7 @@ export default {
        getUsers(){
            axios.get('/api/vue/admin/users/')
                .then(data => {
+                   console.log(data)
                    data.data.users.forEach((element) => {
                        element.created_at = new Date(element.created_at).toLocaleString();
                    });
@@ -55,6 +75,20 @@ export default {
            })
            .catch()
 
+       },
+       storeUser(email, name, role){
+           console.log(email)
+           console.log(name)
+           console.log(role)
+
+           axios.post(`/api/vue/admin/users`,{email: email, name:name, role:role})
+               .then(data=>{
+                   this.getUsers()
+                   console.log(data)
+               })
+               .catch(function (e){
+                   console.log(e)
+               })
        },
    }
 

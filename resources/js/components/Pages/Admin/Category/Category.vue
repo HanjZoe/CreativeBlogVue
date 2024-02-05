@@ -1,9 +1,32 @@
 <template>
-    <div>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Категории</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                            <li class="breadcrumb-item active">Категории</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
         <my-category-grid
             :categories = "this.categories"
         @remove = "deleteCategory"
-        @update = "updateCategory"/>
+        @update = "updateCategory"
+        @store = "storeCategory"/>
+        </section>
+        <!-- /.content -->
     </div>
 </template>
 <script>
@@ -34,10 +57,8 @@ export default {
             })
         },
         updateCategory(id, newTitle){
-            console.log(id,newTitle)
             axios.patch(`/api/vue/admin/category/${id}`,{title: newTitle})
                 .then(data => {
-                console.log(data)
                 this.getCategory()
             }).catch(function (e){
                 console.log(e)
@@ -54,8 +75,10 @@ export default {
         },
 
         storeCategory(title){
+            console.log(title)
             axios.post(`/api/vue/admin/category`,{title: title})
                 .then(data=>{
+
                     this.getCategory()
                 })
                 .catch(function (e){

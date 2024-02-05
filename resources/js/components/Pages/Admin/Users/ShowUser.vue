@@ -1,23 +1,25 @@
 <template>
-    <div>
+    <div class="col-sm-6 d-flex align-items-center">
 
-        <h2>Юзер {{ user.name }}</h2>
-        <a href="#" @click.prevent="deleteClikc(user.id)">Удалить</a>
+        <h1 class="m-0 mr-2">Пользователь {{ user.name }}</h1>
+        <a href="#" @click.prevent="deleteClikc(user.id)" class="border-0 bg-transparent"><i class="far fa-trash-alt text-danger"></i></a>
     </div>
-    <div>
-        <table>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
             <thead>
             <tr>
-                <th>id</th>
-                <th>Название</th>
-                <th>Дата создания</th>
+                <th class="text-center">id</th>
+                <th class="text-center">Имя пользователя</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Дата создания</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.created_at }}</td>
+                <td class="text-center">{{ user.id }}</td>
+                <td class="text-center">{{ user.name }}</td>
+                <td class="text-center">{{ user.email }}</td>
+                <td class="text-center">{{ user.created_at }}</td>
 
             </tr>
             </tbody>

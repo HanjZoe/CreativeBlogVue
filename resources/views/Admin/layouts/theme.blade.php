@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{asset("plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{asset("plugins/daterangepicker/daterangepicker.css")}}">
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -59,8 +61,10 @@
         </div>
 
     </aside>
-    @include('Admin.includes.sidebar')
+{{--    @include('Admin.includes.sidebar')--}}
+    <div id="app">
     @yield('content')
+    </div>
     <footer class="main-footer">
         <strong>Blog</strong>
     </footer>

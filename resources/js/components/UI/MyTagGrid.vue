@@ -4,8 +4,8 @@
             <div class="col-1 mb-3">
 
         <my-popup v-model:show = "this.CreateElementVisible">
-            <create-category
-                @store = "storeCategory"
+            <create-tag
+                @store = "storeTag"
                 @show = "hidenCreate"
             />
         </my-popup>
@@ -29,38 +29,38 @@
                                 <th colspan="3" class="text-center">Удалить/Изменить</th>
                             </tr>
                             </thead>
-                    <tbody v-for="category in categories">
-                    <tr :class="showEdit(category.id) ? 'd-none' : ''">
-                        <td class="text-center">{{ category.id }}</td>
-                        <td class="text-center">{{ category.title }}</td>
-                        <td class="text-center">{{ category.created_at }}</td>
+                    <tbody v-for="tag in tags">
+                    <tr :class="showEdit(tag.id) ? 'd-none' : ''">
+                        <td class="text-center">{{ tag.id }}</td>
+                        <td class="text-center">{{ tag.title }}</td>
+                        <td class="text-center">{{ tag.created_at }}</td>
                         <td class="text-center">
 
                             <my-popup v-model:show="this.EditElementVisible">
-                                <show-category :category="categorySelect"  @show="hidenDialog" @remove="deleteCategory"/>
+                                <show-tag :tag="tagSelect"  @show="hidenDialog" @remove="deleteTag"/>
                             </my-popup>
-                            <a class="text-center" href="#" @click.prevent="ShowDialog(category)"><i
+                            <a class="text-center" href="#" @click.prevent="ShowDialog(tag)"><i
                                 class="fas fa-eye"></i></a>
                         </td>
                         <td>
-                            <a href="#" @click.prevent="changeEditCategoryId(category.id)" class="text-success" ><i class="fas fa-pen"></i></a>
+                            <a href="#" @click.prevent="changeEditTagId(tag.id)" class="text-success" ><i class="fas fa-pen"></i></a>
                         </td>
                         <td>
-                            <a href="#" @click.prevent="deleteCategory(category.id)"><i class="far fa-trash-alt text-danger"></i></a>
+                            <a href="#" @click.prevent="deleteTag(tag.id)"><i class="far fa-trash-alt text-danger"></i></a>
                         </td>
                     </tr>
 
-                    <tr  :class="showEdit(category.id) ? '' : 'd-none'">
-                        <td class="text-center">{{ category.id }}</td>
+                    <tr  :class="showEdit(tag.id) ? '' : 'd-none'">
+                        <td class="text-center">{{ tag.id }}</td>
                         <td class="text-center">
-                            <my-input :placeholder="category.title" v-model="newTitle"/>
+                            <my-input :placeholder="tag.title" v-model="newTitle"/>
                         </td>
-                        <td class="text-center">{{ category.created_at }}</td>
+                        <td class="text-center">{{ tag.created_at }}</td>
                         <td class="text-center">
-                                <a href="#" @click.prevent="editCategory(category.id, true, newTitle)"  class="text-success"><i class="fas fa-pen"></i></a>
+                                <a href="#" @click.prevent="editTag(tag.id, true, newTitle)"  class="text-success"><i class="fas fa-pen"></i></a>
                         </td>
                         <td class="text-center">
-                                <a href="#" @click.prevent="editCategory(category.id, false, newTitle)"><i class="fas fa-ban text-danger"></i></a>
+                                <a href="#" @click.prevent="editTag(tag.id, false, newTitle)"><i class="fas fa-ban text-danger"></i></a>
                         </td>
                     </tr>
 
@@ -84,9 +84,9 @@
 <script>
 
 export default {
-    name: "MyCategoryGrid",
+    name: "MyTagGrid",
     props: {
-        categories: {
+        tags: {
             type: Object,
             default: () => [],
         },
@@ -95,8 +95,8 @@ export default {
             return {
                 newTitle: null,
                 show: false,
-                targetCategory: null,
-                categorySelect: null,
+                targetTag: null,
+                tagSelect: null,
                 CreateElementVisible: false,
                 EditElementVisible: false,
             }
@@ -105,15 +105,15 @@ export default {
             showCreate() {
                 this.CreateElementVisible = true
             },
-            changeEditCategoryId(id) {
-                this.targetCategory = id
+            changeEditTagId(id) {
+                this.targetTag = id
             },
             showEdit(id) {
-                return this.targetCategory === id
+                return this.targetTag === id
             },
-            ShowDialog(category) {
+            ShowDialog(tag) {
                 this.EditElementVisible = true
-                this.categorySelect = category
+                this.tagSelect = tag
 
             },
             hidenDialog(){
@@ -122,21 +122,21 @@ export default {
             hidenCreate(){
                 this.CreateElementVisible = false
             },
-            deleteCategory(id) {
+            deleteTag(id) {
 
                  this.$emit('remove', id)
 
             },
-            editCategory(id, edit, newTitle) {
+            editTag(id, edit, newTitle) {
                 if(newTitle != null) {
                     if (edit) {
                         this.$emit('update', id, newTitle)
                     }
                 }
-                this.targetCategory = null
+                this.targetTag = null
                 this.newTitle = null
             },
-            storeCategory(Title){
+            storeTag(Title){
                 this.$emit('store', Title)
             }
 

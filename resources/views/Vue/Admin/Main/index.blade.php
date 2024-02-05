@@ -1,5 +1,5 @@
 @extends('Admin.layouts.theme')
-@section('main')
+@section('content')
     <router-view></router-view>
 
 @endsection
