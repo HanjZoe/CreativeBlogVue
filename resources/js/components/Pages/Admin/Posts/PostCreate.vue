@@ -10,7 +10,9 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Главная</a></li>
-                            <li class="breadcrumb-item"><a href="#">Посты</a></li>
+                            <li class="breadcrumb-item">
+                                <router-link :to="{ name: 'post.index'}">Посты</router-link>
+                            </li>
                             <li class="breadcrumb-item active">Создание нового поста</li>
                         </ol>
                     </div><!-- /.col -->
@@ -28,13 +30,13 @@
                         <div class="form-group w-25">
                             <my-input :placeholder="titlePlaceholder" v-model="newTitle"/>
 
-                            <div class="text-danger"> message</div>
+                            <div v-if="this.titleError" class="text-danger m-2"> {{ this.titleError }}</div>
 
                         </div>
                         <div class="form-group">
-                            <vue-editor v-model="message" :editor-toolbar="customToolbar"  />
+                            <vue-editor v-model="message" :editor-toolbar="customToolbar"/>
 
-                            <div class="text-danger"> message</div>
+                            <div v-if="this.contentError" class="text-danger m-2"> {{ this.contentError }}</div>
 
                         </div>
 
@@ -50,7 +52,7 @@
                             </div>
                         </div>
 
-                        <div class="text-danger"> message</div>
+                        <div v-if="this.preview_imageError" class="text-danger m-2"> {{ this.preview_imageError }}</div>
 
                         <div class="form-group w-50">
                             <label for="exampleInputFile">Добавить главное изображение</label>
@@ -64,46 +66,35 @@
                             </div>
                         </div>
 
-                        <div class="text-danger"> message</div>
+                        <div v-if="this.main_imageError" class="text-danger m-2"> {{ this.main_imageError }}</div>
 
                         <div class="form-group w-50">
                             <label>Выберите категорию</label>
                             <select v-model="selectCategory" name="category_id" class="form-control">
-                                <option v-for="(category,id) in categories " :key="id" :value="id"
+                                <option v-for="(category,id) in categories " :key="id" :value="category.id"
                                 >{{ category.title }}
                                 </option>
-                                <option value="">title</option>
                             </select>
 
                         </div>
 
-                        <div class="text-danger"> message</div>
+                        <div v-if="this.category_idError" class="text-danger m-2"> {{ this.category_idError }}</div>
 
-                        <div class="form-group w-50">
-                            <label>Тэги</label>
-                            <select v-model="selectTags" name="tag_ids[]" class="select2" multiple="multiple"
-                                    data-placeholder="Выберите тэги" style="width: 100%;">
-                                <option v-for="(tag,id) in tags " :key="id" :value="id"
-                                >{{ tag.title }}
-                                </option>
-
+                        <label>Тэги</label>
+                        <div class="form-group ">
+                            <select ref="selectElement" class="w-50" multiple v-model="selectTags">
+                                <slot></slot>
                             </select>
 
-                            <select  name="tag_ids[]" class="select2" multiple="multiple"
-                                     data-placeholder="Выберите тэги" style="width: 100%;">
-                                <option>2</option>
-                                <option>2</option>
-                                <option>2</option>
-                                <option>2</option>
-                                <option>2</option>
-
-                            </select>
                         </div>
 
-                        <div class="text-danger"> message</div>
+
+                        <div v-if="this.tag_idsError" class="text-danger m-2"> {{ this.tag_idsError }}</div>
 
                         <div class="form-group">
-                            <a href="#" @click.prevent="store()" type="button" class="btn btn-primary">Добавить</a>
+                            <button href="#" @click.prevent="store()" class="btn btn-primary" :disabled="!isDisabled">
+                                Добавить
+                            </button>
                         </div>
 
 
@@ -118,7 +109,9 @@
 
 <script>
 import Dropzone from 'dropzone'
-import { VueEditor } from "vue3-editor";
+import {VueEditor} from "vue3-editor";
+import router from "../../../../router/router";
+
 export default {
     name: "PostCreate",
     data() {
@@ -129,70 +122,107 @@ export default {
             contentPlaceholder: "Заголовок поста",
             newTitle: null,
             content: null,
-            message:null,
-            tags:null,
-            selectTags: {
-                Type: Array,
-                default: () => [],
-            },
+            message: null,
+            tags: null,
+            selectTags: null,
             selectCategory: null,
             categories: null,
             customToolbar: [
                 ["bold", "italic", "underline"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                [ "code-block"]
-            ]
+                [{list: "ordered"}, {list: "bullet"}],
+                ["code-block"]
+            ],
+            selectedValue: null,
+            titleError: null,
+            contentError: null,
+            preview_imageError: null,
+            main_imageError: null,
+            category_idError: null,
+            tag_idsError: null,
         }
     },
-    components:{
+    components: {
         VueEditor,
     },
     methods: {
-        store(){
+        store() {
             console.log("lol")
             const data = new FormData()
-            /* const main = this.dropzone_main.getAcceptedFiles()
-             const prev = this.dropzone_prev.getAcceptedFiles()*/
-            //console.log(files)
-            /* data.append('preview_image', prev[0])
-             data.append('main_image', main[0])*/
+            const main = this.dropzone_main.getAcceptedFiles()
+            const prev = this.dropzone_prev.getAcceptedFiles()
+            const tags = this.selectTags
+            data.append('preview_image', prev[0])
+            data.append('main_image', main[0])
             data.append('title', this.newTitle)
-            data.append('message', this.message)
-            data.append('category', this.selectCategory)
-            data.append('tags[]', this.selectTags)
+            data.append('content', this.message)
+            data.append('category_id', this.selectCategory)
+            // data.append('tag_ids[]', this.selectTags)
+            tags.forEach(tag => {
+                data.append('tag_ids[]', parseInt(tag))
+            })
             console.log(data.title);
-            //axios.post('/api/vue/admin/post/store',  data)
+            axios.post('/api/vue/admin/post/store', data).then(data => {
+                    router.push({name: "post.index"})
+                }
+            ).catch(data => {
+                this.titleError = data.response.data.errors.title[0]
+                this.contentError = data.response.data.errors.content[0]
+                this.preview_imageError = data.response.data.errors.preview_image[0]
+                this.main_imageError = data.response.data.errors.main_image[0]
+                this.category_idError = data.response.data.errors.category_id[0]
+                this.tag_idsError = data.response.data.errors.tag_ids[0]
+            })
         },
-        getCategory(){
-            axios.get('/api/vue/admin/category').then(data =>{
-                    console.log(data)
+        getCategory() {
+            axios.get('/api/vue/admin/category').then(data => {
+
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
                     });
                     this.categories = data.data
+
                 }
-            ).catch(function (e){
+            ).catch(function (e) {
                 console.log(e)
             })
         },
-        getTag(){
-            axios.get('/api/vue/admin/tag').then(data =>{
+        getTag() {
+            axios.get('/api/vue/admin/tag').then(data => {
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
+                        element.deleted_at = 0;
                     });
                     this.tags = data.data
-                    console.log(this.tags)
+                    this.select()
+
                 }
-            ).catch(function (e){
+            ).catch(function (e) {
                 console.log(e)
             })
         },
+
+        select() {
+            $(this.$refs.selectElement).select2({
+                data: this.tags.map(option => ({id: option.id, text: option.title}))
+            }).on('change', () => {
+                this.selectTags = $(this.$refs.selectElement).val();
+            });
+        }
     },
-    computed: {},
+    computed: {
+        isDisabled() {
+            //return true
+            return this.dropzone_main && this.dropzone_prev && this.newTitle && this.message && this.selectTags && this.selectCategory
+        }
+    },
     mounted() {
+
+
+        console.log(this.selectOptions)
         this.getTag()
         this.getCategory()
-        this.dropzone = new Dropzone(this.$refs.dropzone_main, {
+
+        this.dropzone_main = new Dropzone(this.$refs.dropzone_main, {
             url: "asdas",
             autoProcessQueue: false,
             maxFiles: 1,
@@ -205,7 +235,7 @@ export default {
                 });
             }
         })
-        this.dropzone = new Dropzone(this.$refs.dropzone_prev, {
+        this.dropzone_prev = new Dropzone(this.$refs.dropzone_prev, {
             url: "asdas",
             autoProcessQueue: false,
             maxFiles: 1,
@@ -218,12 +248,28 @@ export default {
                 });
             }
         })
+
+
+    },
+
+    watch: {
+        loadedOptions(newOptions) {
+            $(this.$refs.selectElement).empty().select2({
+                data: newOptions.map(option => ({id: option.id, text: option.title}))
+            });
+        },
+        selectedValues(newSelectedValues) {
+            this.$emit('update:modelValue', newSelectedValues);
+        }
+    },
+    beforeDestroy() {
+        $(this.$refs.selectElement).off().select2('destroy');
     }
 }
 </script>
 <style>
 .dz-success-mark,
-.dz-error-mark{
+.dz-error-mark {
     display: none;
 }
 </style>

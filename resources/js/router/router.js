@@ -3,6 +3,7 @@ import Category from "../components/Pages/Admin/Category/Category";
 import Tag from "../components/Pages/Admin/Tags/Tags";
 import PostsIndex from "../components/Pages/Admin/Posts/PostsIndex";
 import PostCreate from "../components/Pages/Admin/Posts/PostCreate"
+import PostEdit from "../components/Pages/Admin/Posts/PostEdit";
 
 
 // import AdminMain from "@/views/SinglePostPage"
@@ -34,6 +35,11 @@ const routes = [
         path: '/vue/admin/post/create',
         component: PostCreate,
         name: 'post.create'
+    },
+    {
+        path: '/vue/admin/post/:id/edit',
+        component: PostEdit,
+        name: 'post.edit'
     },
 ]
 

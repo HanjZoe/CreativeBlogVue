@@ -11,6 +11,9 @@ import ShowCategory from "../Pages/Admin/Category/ShowCategory";
 import CreateTag from "../Pages/Admin/Tags/CreateTags";
 import CreateUser from "../Pages/Admin/Users/CreateUser";
 import ShowTag from "../Pages/Admin/Tags/ShowTags";
+import Select2Wrapper from "./Select2Wrapper"
+import AdminNavBar from "./AdminNavBar";
+import PostShow from "../Pages/Admin/Posts/PostShow";
 
 export default [
     MyNavBar,
@@ -26,6 +29,9 @@ export default [
     ShowTag,
     CreateUser,
     MyPostGrid,
+    Select2Wrapper,
+    AdminNavBar,
+    PostShow,
 ]
 // import Vue from 'vue';
 //

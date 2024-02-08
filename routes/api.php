@@ -40,6 +40,7 @@ Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function(){
 
         Route::group(['namespace' => 'Post','prefix' => 'post'],function (){
             Route::get('/','IndexController')->name('vue.admin.post.index');
+            Route::get('/{post}','EditController')->name('vue.admin.post.edit');
             Route::delete('/{post}','DeleteController')->name('vue.admin.post.delete');
             Route::patch('/{post}','UpdateController')->name('vue.admin.post.update');
             Route::post('/store', 'StoreController')->name('vue.admin.post.store');

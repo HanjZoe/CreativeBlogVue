@@ -11,7 +11,7 @@
                     />
                 </my-popup>
 
-                <a href="#" @click.prevent="showCreate" type="button" class="btn btn-block btn-primary">Добавить</a>
+                <a href="#" @click.prevent="showCreate" type="button" class="btn btn-block btn-primary " :disabled="!isDisabled">Добавить</a>
 
             </div>
         </div>

@@ -17,6 +17,6 @@ class StoreController extends BaseController
         $this->service->store($data);
 
 
-        return redirect()->route('admin.post.index');
+        return response([]);
     }
 }

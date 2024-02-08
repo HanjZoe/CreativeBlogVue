@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-1 mb-3">
 
-
-                <a href="#"  type="button" class="btn btn-block btn-primary">Добавить</a>
-
+                <router-link :to="{ name: 'post.create'}" class="btn btn-block btn-primary">Добавить</router-link>
             </div>
         </div>
         <div class="row">
@@ -30,7 +28,12 @@
                                 <td class="text-center">{{ post.title }}</td>
                                 <td class="text-center">{{ post.created_at }}</td>
                                 <td class="text-center">
-                                    <a class="text-center" href="#"><i class="fas fa-eye"></i></a>
+
+                                    <my-popup v-model:show="this.EditElementVisible">
+                                        <post-show :post="postSelect"  @show="hidenDialog" @remove="deletePost"/>
+                                    </my-popup>
+
+                                    <a class="text-center" href="#" @click.prevent="ShowDialog(post)"><i class="fas fa-eye"></i></a>
                                 </td>
                                 <td>
                                     <a href="#"  class="text-success text-center" ><i class="fas fa-pen"></i></a>
@@ -55,14 +58,17 @@
 </template>
 
 <script>
+import PostShow from "../Pages/Admin/Posts/PostShow";
 export default {
     name: "MyPostGrid",
+    components: {PostShow},
     props: {
     },
     data() {
         return {
             newTitle: null,
             show: false,
+            postSelect:null,
             targetCategory: null,
             categorySelect: null,
             CreateElementVisible: false,
@@ -98,6 +104,14 @@ export default {
                 .catch(function (e){
                     console.log(e)
                 })
+        },
+        ShowDialog(post) {
+            this.EditElementVisible = true
+            this.postSelect = post
+
+        },
+        hidenDialog(){
+            this.EditElementVisible = false
         },
     },
 }

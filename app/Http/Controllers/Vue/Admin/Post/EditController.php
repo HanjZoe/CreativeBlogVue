@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Vue\Admin\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Post\PostResource;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -12,8 +13,8 @@ class EditController extends BaseController
 {
     public function __invoke(Post $post)
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('Admin.Post.Edit', compact('post', 'tags' , 'categories'));
+        //return Post::with("tags","category","comments")->find($post->id);
+
+        return response()->json(new PostResource(Post::with("tags","category","comments")->find($post->id)));
     }
 }
