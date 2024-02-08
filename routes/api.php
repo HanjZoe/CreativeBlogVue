@@ -37,6 +37,12 @@ Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function(){
             Route::patch('/{category}','UpdateController')->name('vue.admin.category.update');
             Route::post('/', 'StoreController')->name('vue.admin.category.store');
         });
+        Route::group(['namespace' => 'Post','prefix' => 'post'],function (){
+            Route::get('/','IndexController')->name('vue.admin.post.index');
+            Route::delete('/{post}','DeleteController')->name('vue.admin.post.delete');
+            Route::patch('/{post}','UpdateController')->name('vue.admin.post.update');
+            Route::post('/', 'StoreController')->name('vue.admin.post.store');
+        });
         Route::group(['namespace' => 'Tag','prefix' => 'tag'],function (){
             Route::get('/','IndexController')->name('vue.admin.tag.index');
             Route::delete('/{tag}','DeleteController')->name('vue.admin.tag.delete');
