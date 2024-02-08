@@ -23,6 +23,8 @@
         <my-user-grid
             :users="users"
             :roles="roles"
+            :CreatePost = "CreatePost"
+            :emailError = "emailError"
             @remove= "deleteUser"
             @update = "updateUser"
             @store = "storeUser"
@@ -38,6 +40,8 @@ export default {
         return{
             users: null,
             roles:null,
+            emailError: "",
+            CreatePost: false,
         }
     },
     mounted(){
@@ -63,8 +67,8 @@ export default {
          axios.patch(`/api/vue/admin/users/${id}`,{name: newName, email: newEmail, role: newRole,user_id: id}).then(data => {
              console.log(data)
              this.getUsers()
-         }).catch(function (e){
-             console.log(e)
+         }).catch(data=>{
+             this.nameError = data.response.data.errors.email[0]
          })
        },
        deleteUser(user){
@@ -74,22 +78,23 @@ export default {
                console.log(data)
            })
            .catch()
-
        },
        storeUser(email, name, role){
-           console.log(email)
-           console.log(name)
-           console.log(role)
-
            axios.post(`/api/vue/admin/users`,{email: email, name:name, role:role})
                .then(data=>{
                    this.getUsers()
-                   console.log(data)
                })
-               .catch(function (e){
-                   console.log(e)
+               .catch(data=>{
+                   console.log(data)
+                   this.emailError = data.response.data.errors.email[0]
+
                })
        },
+       hidenShowCreate(){
+           this.CreatePost = !this.CreatePost
+       },
+
+
    }
 
 }

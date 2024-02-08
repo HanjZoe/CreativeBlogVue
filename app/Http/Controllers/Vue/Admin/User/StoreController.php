@@ -12,6 +12,7 @@ class StoreController extends Controller
     public function __invoke(StoreRequest $request)
     {
         $data = $request->validated();
+
         StoreUserJob::dispatch($data);
         return response($data);
     }

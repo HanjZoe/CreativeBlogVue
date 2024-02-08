@@ -1,43 +1,47 @@
 <template>
     <div class="col-12">
-    <div>
+        <div>
 
-        <label>Имя пользователя</label>
-        <div class="form-group">
-        <my-input :placeholder="placeholderName" v-model="newName"/>
+            <label>Имя пользователя</label>
+            <div class="form-group">
+                <my-input :placeholder="placeholderName" v-model="this.newName"/>
+            </div>
+
+
+            <label>Адрес электронной почты</label>
+            <div class="form-group">
+                <my-input :placeholder="placeholderEmail" v-model="this.newEmail"/>
+                <div v-if="this.emailError" class="text-danger m-2"> {{ this.emailError }}</div>
+            </div>
+
+            <label>
+                Роль пользователя
+            </label>
+            <div class="form-group">
+                <select v-model="this.selectedRole">
+                    <option v-for="(role,id) in roles " :key="id" :value="id"
+                    >{{ role }}
+                    </option>
+                </select>
+            </div>
+
+
         </div>
-
-
-        <label>Адрес электронной почты</label>
-        <div class="form-group">
-        <my-input :placeholder="placeholderEmail" v-model="newEmail"/>
-        </div>
-
-        <label>
-            Роль пользователя
-        </label>
-        <div class="form-group">
-            <select v-model="selectedRole">
-                <option v-for="(rl,id) in roles " :key="id" :value="id"
-                >{{ rl }}
-                </option>
-            </select>
-        </div>
-
-
-    </div>
         <div class="btni">
-            <button :disabled = "!isDisabled" @click.prevent="storeCategory(newName, newEmail, selectedRole)"  class="btn btn-primary">Добавить</button>
+            <button :disabled="!isDisabled" @click.prevent="storeUser()"
+                    class="btn btn-primary">Добавить
+            </button>
         </div>
-        </div>
+    </div>
 
 </template>
 
 <script>
 export default {
     name: "CreateUser",
-    props:{
-      roles: null,
+    props: {
+        roles: null,
+        emailError: null,
     },
     data() {
         return {
@@ -46,18 +50,20 @@ export default {
             newName: null,
             newEmail: null,
             selectedRole: 0,
+
         }
     },
     emits: ['store', 'show'],
     methods: {
-        storeCategory(newName, newEmail, selectedRole){
+        storeUser() {
             this.$emit('show')
-            this.$emit('store', newEmail, newName,selectedRole)
+            this.$emit('store', this.newEmail, this.newName, this.selectedRole)
+
         },
 
     },
-    computed:{
-        isDisabled(){
+    computed: {
+        isDisabled() {
             return this.newEmail && this.newName
         }
     }
@@ -66,7 +72,7 @@ export default {
 </script>
 
 <style scoped>
-.btni{
+.btni {
     position: relative;
     left: 62%;
     padding-top: 18px;

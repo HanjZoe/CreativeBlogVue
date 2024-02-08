@@ -16,8 +16,10 @@ class StoreController extends Controller
 {
     public function __invoke(StoreRequest $request)
     {
+
         $data = $request->validated();
-        StoreUserJob::dispatch($data);
+
+     StoreUserJob::dispatch($data);
         return redirect()->route('admin.user.index');
     }
 }

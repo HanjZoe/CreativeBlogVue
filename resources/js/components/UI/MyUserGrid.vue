@@ -5,8 +5,9 @@
 
                 <my-popup v-model:show = "this.CreateElementVisible">
                     <create-user v-model:roles = "this.roles"
+                                 :emailError = "emailError"
                         @store = "storeUser"
-                        @show = "hidenCreate"
+                        @show = "showCreate"
                     />
                 </my-popup>
 
@@ -96,7 +97,8 @@ export default {
     props: {
         users: null,
         roles: null,
-
+        emailError: null,
+        CreatePost: false
     },
     data() {
         return {
@@ -149,7 +151,7 @@ export default {
             this.CreateElementVisible = false
         },
         showCreate(){
-            this.CreateElementVisible = true
+            this.CreateElementVisible = !this.CreateElementVisible
         }
     },
     name: "MyUserGrid"

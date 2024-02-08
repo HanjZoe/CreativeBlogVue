@@ -71,9 +71,9 @@
     </div>
 </header>
 
-
-@yield('main')
-
+<div id="app">
+@yield('content')
+</div>
 <footer class="edica-footer">
 </footer>
 <script src="{{asset('assets/vendors/popper.js/popper.min.js')}}"></script>

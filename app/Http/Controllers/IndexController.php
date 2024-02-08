@@ -9,7 +9,16 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
-        return view('Vue.Admin.Main.index');
+
+
+
+        if (strpos(url()->current(), 'admin') || strpos(url()->current(), 'admin')) {
+            $layout = 'Admin.layouts.theme';
+
+        } else {
+            $layout = 'layouts.theme';
+        }
+        return view('Vue.Admin.Main.index',compact('layout'));
     }
 
 }

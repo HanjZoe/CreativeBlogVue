@@ -20,11 +20,13 @@ class PostService
                 $tagIds = $data['tag_ids'];
                 unset($data['tag_ids']);
             }
-    $previewImagePath = Storage::disk('public')->put('/images', $data['preview_image']);
+            $previewImagePath = Storage::disk('public')->put('/images', $data['preview_image']);
 
-    $mainImagePath = Storage::disk('public')->put('/images', $data['main_image']);
-    $data['preview_image'] = $previewImagePath;
-    $data['main_image'] = $mainImagePath;
+            $mainImagePath = Storage::disk('public')->put('/images', $data['main_image']);
+            $data['preview_image'] = $previewImagePath;
+            $data['main_image'] = $mainImagePath;
+            $data['url_preview_image'] = url('/storage/' . $previewImagePath);
+            $data['url_main_image'] = url('/storage/' . $mainImagePath);
 //   unset($data['preview_image']);
 //   unset($data['main_image']);
             $post = Post::firstOrCreate($data);
@@ -50,18 +52,22 @@ class PostService
                 $tagIds = $data['tag_ids'];
                 unset($data['tag_ids']);
             }
-if(isset($data['preview_image'])){
-    $previewImagePath = Storage::disk('public')->put('/images', $data['preview_image']);
-    $data['preview_image'] = $previewImagePath;
-} else {
-    $data['preview_image'] = $post->preview_image;
-}
-if(isset($data['main_image'])){
-    $mainImagePath = Storage::disk('public')->put('/images', $data['main_image']);
-    $data['main_image'] = $mainImagePath;
-} else {
-    $data['main_image'] = $post->main_image;
-}
+            if (isset($data['preview_image'])) {
+                $previewImagePath = Storage::disk('public')->put('/images', $data['preview_image']);
+                $data['preview_image'] = $previewImagePath;
+                $data['url_preview_image'] = url('/storage/' . $previewImagePath);
+            } else {
+                $data['preview_image'] = $post->preview_image;
+                $data['url_preview_image'] = $post->url_preview_image;
+            }
+            if (isset($data['main_image'])) {
+                $mainImagePath = Storage::disk('public')->put('/images', $data['main_image']);
+                $data['main_image'] = $mainImagePath;
+                $data['url_main_image'] = url('/storage/' .$mainImagePath);
+            } else {
+                $data['main_image'] = $post->main_image;
+                $data['url_main_image'] = $post->url_main_image;
+            }
 
 
 //      unset($data['preview_image']);

@@ -1,4 +1,4 @@
-@extends('Admin.layouts.theme')
+@extends($layout)
 @section('content')
     <router-view></router-view>
 

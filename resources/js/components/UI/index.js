@@ -1,5 +1,6 @@
 import MyNavBar from "./MyNavBar";
 import MyUserGrid from "./MyUserGrid";
+import MyPostGrid from "./MyPostGrid";
 import MyInput from "./MyInput";
 import MyPopup from "./MyPopup";
 import MyCategoryGrid from "./MyCategoryGrid";
@@ -10,6 +11,7 @@ import ShowCategory from "../Pages/Admin/Category/ShowCategory";
 import CreateTag from "../Pages/Admin/Tags/CreateTags";
 import CreateUser from "../Pages/Admin/Users/CreateUser";
 import ShowTag from "../Pages/Admin/Tags/ShowTags";
+
 export default [
     MyNavBar,
     MyUserGrid,
@@ -23,6 +25,7 @@ export default [
     ShowCategory,
     ShowTag,
     CreateUser,
+    MyPostGrid,
 ]
 // import Vue from 'vue';
 //
