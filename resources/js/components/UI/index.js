@@ -10,6 +10,7 @@ import ShowCategory from "../Pages/Admin/Category/ShowCategory";
 import CreateTag from "../Pages/Admin/Tags/CreateTags";
 import CreateUser from "../Pages/Admin/Users/CreateUser";
 import ShowTag from "../Pages/Admin/Tags/ShowTags";
+import MyPostGrid from "./MyPostGrid";
 export default [
     MyNavBar,
     MyUserGrid,
@@ -23,6 +24,7 @@ export default [
     ShowCategory,
     ShowTag,
     CreateUser,
+    MyPostGrid,
 ]
 // import Vue from 'vue';
 //

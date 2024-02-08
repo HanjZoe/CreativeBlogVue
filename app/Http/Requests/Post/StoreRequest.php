@@ -33,6 +33,7 @@ class StoreRequest extends FormRequest
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'integer|exists:tags,id'
         ];
+
     }
     public function messages()
     {

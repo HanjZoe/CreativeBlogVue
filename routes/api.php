@@ -41,7 +41,7 @@ Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function(){
             Route::get('/','IndexController')->name('vue.admin.post.index');
             Route::delete('/{post}','DeleteController')->name('vue.admin.post.delete');
             Route::patch('/{post}','UpdateController')->name('vue.admin.post.update');
-            Route::post('/', 'StoreController')->name('vue.admin.post.store');
+            Route::post('/store', 'StoreController')->name('vue.admin.post.store');
         });
         Route::group(['namespace' => 'Tag','prefix' => 'tag'],function (){
             Route::get('/','IndexController')->name('vue.admin.tag.index');

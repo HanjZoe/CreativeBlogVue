@@ -39,6 +39,7 @@ import './bootstrap'
 import router from "./router/router";
 import IndexComponent from "./components/IndexComponent";
 import {createRouter, createWebHistory} from "vue-router";
+
 //Vue.component('adminuserindex', require('./components/Pages/AdminUserIndex.vue').default)
 
 const app = createApp(app);
