@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -40,24 +41,24 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">Войти</a>
-                                </li>
-                            @endif
+{{--                        @guest--}}
+{{--                            @if (Route::has('login'))--}}
+{{--                                <li class="nav-item">--}}
+{{--                                    <a class="nav-link" href="{{ route('login') }}">Войти</a>--}}
+{{--                                </li>--}}
+{{--                            @endif--}}
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
-                                </li>
-                            @endif
-                        @else
-                            <form action="{{route('logout')}}" method="post">
-                                @csrf
-                                <input class="btn btn-outline-primary" type="submit" value="Выйти">
-                            </form>
-                        @endguest
+{{--                            @if (Route::has('register'))--}}
+{{--                                <li class="nav-item">--}}
+{{--                                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>--}}
+{{--                                </li>--}}
+{{--                            @endif--}}
+{{--                        @else--}}
+{{--                            <form action="{{route('logout')}}" method="post">--}}
+{{--                                @csrf--}}
+{{--                                <input class="btn btn-outline-primary" type="submit" value="Выйти">--}}
+{{--                            </form>--}}
+{{--                        @endguest--}}
                     </ul>
                 </div>
             </div>

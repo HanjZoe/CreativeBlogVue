@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements  JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
@@ -65,5 +66,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function comments(){
         return $this->hasMany(Comment::class,'user_id','id');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

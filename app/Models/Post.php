@@ -17,6 +17,8 @@ class Post extends Model
         'category_id',
         'preview_image',
         'main_image',
+        'url_main_image',
+        'url_preview_image',
     ];
 protected $withCount = ['likedUsers'];
     public function tags(){

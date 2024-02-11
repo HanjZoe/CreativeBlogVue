@@ -14,6 +14,7 @@ import ShowTag from "../Pages/Admin/Tags/ShowTags";
 import Select2Wrapper from "./Select2Wrapper"
 import AdminNavBar from "./AdminNavBar";
 import PostShow from "../Pages/Admin/Posts/PostShow";
+import Select2 from 'vue3-select2-component';
 
 export default [
     MyNavBar,
@@ -32,6 +33,7 @@ export default [
     Select2Wrapper,
     AdminNavBar,
     PostShow,
+    Select2,
 ]
 // import Vue from 'vue';
 //

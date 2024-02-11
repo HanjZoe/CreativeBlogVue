@@ -4,6 +4,8 @@ import Tag from "../components/Pages/Admin/Tags/Tags";
 import PostsIndex from "../components/Pages/Admin/Posts/PostsIndex";
 import PostCreate from "../components/Pages/Admin/Posts/PostCreate"
 import PostEdit from "../components/Pages/Admin/Posts/PostEdit";
+import login from "../components/Pages/Main/login";
+import register from "../components/Pages/Main/register";
 
 
 // import AdminMain from "@/views/SinglePostPage"
@@ -41,6 +43,16 @@ const routes = [
         component: PostEdit,
         name: 'post.edit'
     },
+    {
+        path: '/vue/login',
+        component: login,
+        name: 'user.login',
+    },
+    {
+        path: '/vue/registration',
+        component: register,
+        name: 'user.registration',
+    }
 ]
 
 const  router = createRouter({

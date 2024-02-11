@@ -18,12 +18,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
+
 Route::group(['namespace' => 'Post', 'prefix' => 'posts'], function () {
     Route::group(['namespace' => 'Like', 'prefix'=>'{post}/Alikes'], function (){
         Route::post('/','StoreController')->name('post.Alike.store');
     });
 });
 Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function(){
+   Route::group(['namespace' => 'User', 'prefix' => 'user'], function () {
+        Route::post('/reg', 'StoreController')->name('vue.registration');
+    });
     Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
         Route::group(['namespace' => 'User','prefix' => 'users'],function (){
             Route::get('/','IndexController')->name('vue.admin.user.index');

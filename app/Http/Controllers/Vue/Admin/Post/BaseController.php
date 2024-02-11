@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Vue\Admin\Post;
 
 use App\Http\Controllers\Controller;
 use App\Service\PostService;
-use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {

@@ -1,76 +1,41 @@
 <template>
-    <select ref="selectElement" multiple v-model="selectedValues">
-        <slot></slot>
-    </select>
+    <div>
+        <dropzone ref="myDropzone" @vdropzone-file-added="handleFileAdded"></dropzone>
+    </div>
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-    name: 'Select2Wrapper',
-    data() {
-        return {
-            loadedOptions: [],
-            selectedValues: [] // Добавляем переменную для хранения выбранных значений
-        };
+    methods: {
+        // Обработка добавленного файла
+        handleFileAdded(file) {
+            this.$refs.myDropzone.removeAllFiles(); // Удаляем все текущие файлы из Dropzone
+            this.$refs.myDropzone.addFile(file); // Добавляем новый файл в Dropzone
+        },
+        // Получение изображения через Axios
+        fetchImage() {
+            axios.get('your-api-endpoint')
+                .then(response => {
+                    const imageUrl = response.data;
+
+                    // Создаем объект файла, который будет добавлен в Dropzone
+                    const file = {
+                        name: imageUrl.substring(imageUrl.lastIndexOf('/') + 1), // Получаем имя файла из URL
+                        url: imageUrl, // URL изображения
+                    };
+
+                    this.handleFileAdded(file); // Добавляем изображение в Dropzone
+                })
+                .catch(error => {
+                    console.error('Error fetching image:', error);
+                });
+        },
     },
     mounted() {
-        this.loadOptions();
+        // Получаем изображение при монтировании компонента
+        this.fetchImage();
     },
-    methods: {
-        loadOptions() {
-            // Дожидаемся завершения обоих запросов перед инициализацией Select2
-            Promise.all([this.getPost(), this.getTag()])
-                .then(([postData, tagData]) => {
-                    // Здесь вы можете использовать данные из postData и tagData для инициализации Select2
-                    // Например, this.loadedOptions = postData.data или this.loadedOptions = tagData.data
-                    this.loadedOptions = tagData.data;
-                    this.selectedValues = postData.data.tags.map(tag => tag.id);
-                    this.initializeSelect2();
-                })
-                .catch(error => {
-                    console.error('Failed to load options:', error);
-                });
-        },
-        getPost() {
-            return axios.get(`/api/vue/admin/post/${this.$route.params.id}`);
-        },
-        getTag() {
-            return axios.get('/api/vue/admin/tag')
-                .then(response => {
-                    response.data.forEach((element) => {
-                        element.created_at = new Date(element.created_at).toLocaleString();
-                        element.deleted_at = 0;
-                    });
-                    return response;
-                })
-                .catch(error => {
-                    console.error('Failed to load tags:', error);
-                    return [];
-                });
-        },
-        initializeSelect2() {
-            $(this.$refs.selectElement).select2({
-                data: this.loadedOptions.map(option => ({ id: option.id, text: option.title })),
-                val: this.selectedValues // Устанавливаем начальное значение для Select2
-            }).on('change', () => {
-                this.selectedValues = $(this.$refs.selectElement).val(); // Обновляем выбранные значения при изменении в Select2
-            });
-        }
-    },
-    watch: {
-        loadedOptions(newOptions) {
-            $(this.$refs.selectElement).empty().select2({
-                data: newOptions.map(option => ({ id: option.id, text: option.title }))
-            });
-        },
-        selectedValues(newSelectedValues) {
-            this.$emit('update:modelValue', newSelectedValues); // Эмитируем событие обновления для v-model
-        }
-    },
-    beforeDestroy() {
-        $(this.$refs.selectElement).off().select2('destroy');
-    }
 };
 </script>

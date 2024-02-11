@@ -32,7 +32,7 @@
                     <tbody v-for="tag in tags">
                     <tr :class="showEdit(tag.id) ? 'd-none' : ''">
                         <td class="text-center">{{ tag.id }}</td>
-                        <td class="text-center">{{ tag.title }}</td>
+                        <td class="text-center">{{ tag.text }}</td>
                         <td class="text-center">{{ tag.created_at }}</td>
                         <td class="text-center">
 
@@ -53,7 +53,7 @@
                     <tr  :class="showEdit(tag.id) ? '' : 'd-none'">
                         <td class="text-center">{{ tag.id }}</td>
                         <td class="text-center">
-                            <my-input :placeholder="tag.title" v-model="newTitle"/>
+                            <my-input :placeholder="tag.text" v-model="newTitle"/>
                         </td>
                         <td class="text-center">{{ tag.created_at }}</td>
                         <td class="text-center">

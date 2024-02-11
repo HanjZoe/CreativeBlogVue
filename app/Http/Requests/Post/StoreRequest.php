@@ -44,6 +44,7 @@ class StoreRequest extends FormRequest
             'preview_image.required' => 'Добавьте изображение',
             'preview_image.file' => 'Необходимо выбрать файл',
             'category_id.exists' => 'Категория должна быть',
+            'category_id.integer' => 'Категория должна быть',
             'category_id.required' => 'id должен быть в базе',
             'tag_ids.exists' => 'id должен быть в базе',
             'tag_ids.nullable' => 'Тэги должны быть',

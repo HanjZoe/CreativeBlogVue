@@ -1,7 +1,7 @@
 <template>
 
     <div class="col-sm-6 d-flex align-items-center">
-        <h1 class="m-0 mr-2">Категория {{ tag.title }}</h1>
+        <h1 class="m-0 mr-2">Категория {{ tag.text }}</h1>
         <a href="#" @click.prevent="deleteClikc(tag.id)" class="border-0 bg-transparent"><i class="far fa-trash-alt text-danger"></i></a>
     </div>
     <div class="card-body table-responsive p-0">
@@ -16,7 +16,7 @@
             <tbody>
             <tr>
                 <td class="text-center">{{ tag.id }}</td>
-                <td class="text-center">{{ tag.title }}</td>
+                <td class="text-center">{{ tag.text }}</td>
                 <td class="text-center">{{ tag.created_at }}</td>
 
             </tr>

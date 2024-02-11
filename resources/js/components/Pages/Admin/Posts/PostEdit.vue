@@ -39,25 +39,11 @@
                         </div>
 
                         <div class="form-group w-50">
-                            <label>Добавить превью</label>
-                            <div>
-                                <div>
-                                    <div class="bg-dark text-center text-light w-50 md-3 p-5" ref="dropzone_prev">
-                                        Добавить превью
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div v-if="this.preview_imageError" class="text-danger m-2"> {{ this.preview_imageError }}</div>
-
-                        <div class="form-group w-50">
                             <label for="exampleInputFile">Добавить главное изображение</label>
                             <div>
                                 <div>
                                     <div class="bg-dark text-center text-light w-50 md-3 p-5" ref="dropzone_main">
-                                        Добавить главное изображение
+                                        Предыдущее главное изображение
                                     </div>
                                 </div>
 
@@ -65,6 +51,22 @@
                         </div>
 
                         <div v-if="this.main_imageError" class="text-danger m-2"> {{ this.main_imageError }}</div>
+
+                        <div class="form-group w-50">
+                            <label>Добавить превью</label>
+                            <div>
+                                <div>
+                                    <div class="bg-dark text-center text-light w-50 md-3 p-5" ref="dropzone_prev">
+                                        Предыдущее превью
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div v-if="this.preview_imageError" class="text-danger m-2"> {{ this.preview_imageError }}</div>
+
+
+
 
                         <div class="form-group w-50">
                             <label>Выберите категорию</label>
@@ -79,17 +81,13 @@
                         <div v-if="this.category_idError" class="text-danger m-2"> {{ this.category_idError }}</div>
 
                         <label>Тэги</label>
-                        <div class="form-group ">
-                            <select ref="selectElement"  class="w-50" multiple v-model="selectTags">
-                                <slot></slot>
-                            </select>
-                        </div>
+                        <Select2 v-model="this.selectTags" :options="this.tags" :settings="{ multiple: true}" />
 
 
                         <div v-if="this.tag_idsError" class="text-danger m-2"> {{ this.tag_idsError }}</div>
 
                         <div class="form-group">
-                            <button href="#" @click.prevent="store()" class="btn btn-primary" :disabled="!isDisabled">
+                            <button href="#" @click.prevent="update()" class="btn btn-primary" :disabled="!isDisabled">
                                 Добавить
                             </button>
                         </div>
@@ -114,6 +112,7 @@ export default {
     name: "PostCreate",
     data() {
         return {
+            kek: null,
             dropzone_main: null,
             dropzone_prev: null,
             titlePlaceholder: "Заголовок поста",
@@ -122,12 +121,7 @@ export default {
             content: null,
             message: null,
             tags: null,
-            selectTags: [14, 16],
-            selectTagsOld: [
-                { id: 14, title: 'Option 1' },
-                { id: 16, title: 'Option 2' },
-                { id: 3, title: 'Option 3' }
-            ],
+            selectTags: [],
             selectCategory: null,
             categories: null,
             customToolbar: [
@@ -142,8 +136,7 @@ export default {
             main_imageError: null,
             category_idError: null,
             tag_idsError: null,
-            loadedOptions: [],
-            selectedValues: [],
+
         }
     },
     components: {
@@ -151,44 +144,60 @@ export default {
     },
     methods: {
         getPost() {
-           return  axios.get(`/api/vue/admin/post/${this.$route.params.id}`).then(data => {
+            axios.get(`/api/vue/admin/post/${this.$route.params.id}`).then(data => {
 
                 this.newTitle = data.data.title
                 this.message = data.data.content
                 this.selectCategory = data.data.category_id
-               this.selectTags = data.data.tags.map(tag => tag.id); // Преобразуем массив объектов в массив идентификаторов
-               console.log('getPost() выполнен успешно. Вызываем initializeSelect2()');
-               this.initializeSelect2(); // Вызываем метод инициализации Select2 после загрузки данных
-                return data.data.tags
+                data.data.tags.forEach(tags => {
+                    this.selectTags.push(tags.id)
+                })
+                let main = {name: "Новое главное изображение", size:12345}
+                this.dropzone_main.displayExistingFile(main, data.data.url_main_image)
+
+                    let prev = {name: "Новое превью", size:12345}
+                    this.dropzone_prev.displayExistingFile(prev, data.data.url_preview_image)
+
+
 
             })
         },
 
-        store() {
+        update() {
 
             const data = new FormData()
+
             const main = this.dropzone_main.getAcceptedFiles()
             const prev = this.dropzone_prev.getAcceptedFiles()
             const tags = this.selectTags
-            data.append('preview_image', prev[0])
-            data.append('main_image', main[0])
+            if( main.length !== 0){
+                data.append('main_image', main[0])
+            }
+            if( prev.length !== 0){
+                data.append('preview_image', prev[0])
+            }
+
+
             data.append('title', this.newTitle)
             data.append('content', this.message)
             data.append('category_id', this.selectCategory)
+            data.append('_method', 'PATCH'),
             tags.forEach(tag => {
                 data.append('tag_ids[]', parseInt(tag))
             })
 
-            axios.post('/api/vue/admin/post/store', data).then(data => {
+            axios.post(`/api/vue/admin/post/${this.$route.params.id}`, data).then(data => {
                     router.push({name: "post.index"})
                 }
             ).catch(data => {
-                this.titleError = data.response.data.errors.title[0]
-                this.contentError = data.response.data.errors.content[0]
-                this.preview_imageError = data.response.data.errors.preview_image[0]
-                this.main_imageError = data.response.data.errors.main_image[0]
-                this.category_idError = data.response.data.errors.category_id[0]
-                this.tag_idsError = data.response.data.errors.tag_ids[0]
+
+                this.titleError = data.response.data.errors && data.response.data.errors.title ? data.response.data.errors.title[0] : null;
+                this.contentError =  data.response.data.errors && data.response.data.errors.content ? data.response.data.errors.content[0] : null;
+                this.preview_imageError = data.response.data.errors && data.response.data.errors.preview_image ? data.response.data.errors.preview_image[0] : null;
+                this.main_imageError = data.response.data.errors && data.response.data.errors.main_image ? data.response.data.errors.main_image[0] : null;
+                this.category_idError = data.response.data.errors && data.response.data.errors.category_id ? data.response.data.errors.category_id[0] : null;
+                this.tag_idsError = data.response.data.errors && data.response.data.errors.tag_ids ? data.response.data.errors.tag_ids[0] : null;
+
             })
         },
         getCategory() {
@@ -205,42 +214,21 @@ export default {
             })
         },
         getTag() {
-            return axios.get('/api/vue/admin/tag')
-                .then(data => {
+            axios.get('/api/vue/admin/tag').then(data => {
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
                         element.deleted_at = 0;
                     });
-                    return data;
-                })
-                .catch(error => {
-                    console.error('Failed to load tags:', error);
-                    return [];
-                });
+                    this.tags = data.data
+
+
+                }
+            ).catch(function (e) {
+                console.log(e)
+            })
         },
 
-        select() {
-            Promise.all([this.getPost(), this.getTag()])
-                .then(([postData, tagData]) => {
-                    // Здесь вы можете использовать данные из postData и tagData для инициализации Select2
-                    // Например, this.loadedOptions = postData.data или this.loadedOptions = tagData.data
-                    console.log(postData)
-                    this.loadedOptions = tagData.data;
-                    this.selectedValues = postData.map(tag => tag.id);
-                    this.initializeSelect2();
-                })
-                .catch(error => {
-                    console.error('Failed to load options:', error);
-                });
-        },
 
-        initializeSelect2() {
-            console.log(this.selectTags)
-            $(this.$refs.selectElement).select2({
-                data: this.selectTagsOld.map(option => ({ id: option.id, text: option.title })),
-                val: this.selectTags // Устанавливаем начальное значение для Select2
-            }).trigger('change'); // Принудительно вызываем событие change, чтобы Select2 обновил свое состояние
-        }
 
     },
 
@@ -253,12 +241,10 @@ export default {
     },
     mounted() {
 
-
-        this.select()
         this.getCategory()
-       /* this.getTag()
+       this.getTag()
 
-        this.getPost()*/
+        this.getPost()
 
         this.dropzone_main = new Dropzone(this.$refs.dropzone_main, {
             url: "asdas",
@@ -289,21 +275,6 @@ export default {
 
 
     },
-
-    watch: {
-        loadedOptions(newOptions) {
-            $(this.$refs.selectElement).empty().select2({
-                data: newOptions.map(option => ({ id: option.id, text: option.title }))
-            });
-        },
-        selectedValues(newSelectedValues) {
-            this.$emit('update:modelValue', newSelectedValues); // Эмитируем событие обновления для v-model
-        }
-    },
-    beforeDestroy() {
-        $(this.$refs.selectElement).off().select2('destroy');
-    }
-
 }
 </script>
 <style>

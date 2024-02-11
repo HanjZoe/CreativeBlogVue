@@ -81,18 +81,15 @@
                         <div v-if="this.category_idError" class="text-danger m-2"> {{ this.category_idError }}</div>
 
                         <label>Тэги</label>
-                        <div class="form-group ">
-                            <select ref="selectElement" class="w-50" multiple v-model="selectTags">
-                                <slot></slot>
-                            </select>
-
-                        </div>
+                        <Select2 v-model="this.selectTags" :options="this.tags" :settings="{ multiple: true}" />
 
 
                         <div v-if="this.tag_idsError" class="text-danger m-2"> {{ this.tag_idsError }}</div>
 
                         <div class="form-group">
-                            <button href="#" @click.prevent="store()" class="btn btn-primary" :disabled="!isDisabled">
+
+<!--                            :disabled="!isDisabled"-->
+                            <button href="#" @click.prevent="store()" class="btn btn-primary" >
                                 Добавить
                             </button>
                         </div>
@@ -165,12 +162,13 @@ export default {
                     router.push({name: "post.index"})
                 }
             ).catch(data => {
-                this.titleError = data.response.data.errors.title[0]
-                this.contentError = data.response.data.errors.content[0]
-                this.preview_imageError = data.response.data.errors.preview_image[0]
-                this.main_imageError = data.response.data.errors.main_image[0]
-                this.category_idError = data.response.data.errors.category_id[0]
-                this.tag_idsError = data.response.data.errors.tag_ids[0]
+
+                this.titleError = data.response.data.errors && data.response.data.errors.title ? data.response.data.errors.title[0] : null;
+                this.contentError =  data.response.data.errors && data.response.data.errors.content ? data.response.data.errors.content[0] : null;
+                this.preview_imageError = data.response.data.errors && data.response.data.errors.preview_image ? data.response.data.errors.preview_image[0] : null;
+                this.main_imageError = data.response.data.errors && data.response.data.errors.main_image ? data.response.data.errors.main_image[0] : null;
+                this.category_idError = data.response.data.errors && data.response.data.errors.category_id ? data.response.data.errors.category_id[0] : null;
+                this.tag_idsError = data.response.data.errors && data.response.data.errors.tag_ids ? data.response.data.errors.tag_ids[0] : null;
             })
         },
         getCategory() {
@@ -193,7 +191,7 @@ export default {
                         element.deleted_at = 0;
                     });
                     this.tags = data.data
-                    this.select()
+
 
                 }
             ).catch(function (e) {
@@ -201,13 +199,6 @@ export default {
             })
         },
 
-        select() {
-            $(this.$refs.selectElement).select2({
-                data: this.tags.map(option => ({id: option.id, text: option.title}))
-            }).on('change', () => {
-                this.selectTags = $(this.$refs.selectElement).val();
-            });
-        }
     },
     computed: {
         isDisabled() {
@@ -218,7 +209,6 @@ export default {
     mounted() {
 
 
-        console.log(this.selectOptions)
         this.getTag()
         this.getCategory()
 
@@ -251,20 +241,6 @@ export default {
 
 
     },
-
-    watch: {
-        loadedOptions(newOptions) {
-            $(this.$refs.selectElement).empty().select2({
-                data: newOptions.map(option => ({id: option.id, text: option.title}))
-            });
-        },
-        selectedValues(newSelectedValues) {
-            this.$emit('update:modelValue', newSelectedValues);
-        }
-    },
-    beforeDestroy() {
-        $(this.$refs.selectElement).off().select2('destroy');
-    }
 }
 </script>
 <style>

@@ -36,7 +36,11 @@
                                     <a class="text-center" href="#" @click.prevent="ShowDialog(post)"><i class="fas fa-eye"></i></a>
                                 </td>
                                 <td>
-                                    <a href="#"  class="text-success text-center" ><i class="fas fa-pen"></i></a>
+
+
+                                    <router-link v-if="typeof post.id !== 'undefined'"
+                                                 :to="{ name: 'post.edit', params: { id: post.id }}" class="text-success text-center"><i class="fas fa-pen"></i>
+                                    </router-link>
                                 </td>
                                 <td>
                                     <a href="#" @click.prevent = "deletePost(post.id)" ><i class="far fa-trash-alt text-danger text-center"></i></a>
