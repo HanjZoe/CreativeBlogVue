@@ -103,4 +103,4 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('{page}', 'IndexController')->name('vue.admin.main.index')->where('page','.*');
+Route::get('{page}', 'IndexController')->name('vue.admin.main.index')->where('page','.*')->middleware('api');

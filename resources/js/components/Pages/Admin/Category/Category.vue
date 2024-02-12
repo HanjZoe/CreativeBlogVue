@@ -30,8 +30,10 @@
     </div>
 </template>
 <script>
+import api from "../../../../api";
 export default {
     name: "Category",
+
     data() {
         return {
             categories:{
@@ -45,7 +47,7 @@ export default {
     },
     methods: {
         getCategory(){
-            axios.get('/api/vue/admin/category').then(data =>{
+            api.get('/api/vue/admin/category').then(data =>{
                 console.log(data)
                 data.data.forEach((element) => {
                     element.created_at = new Date(element.created_at).toLocaleString();
@@ -57,7 +59,7 @@ export default {
             })
         },
         updateCategory(id, newTitle){
-            axios.patch(`/api/vue/admin/category/${id}`,{title: newTitle})
+            api.patch(`/api/vue/admin/category/${id}`,{title: newTitle})
                 .then(data => {
                 this.getCategory()
             }).catch(function (e){
@@ -65,7 +67,7 @@ export default {
             })
         },
         deleteCategory(category){
-            axios.delete(`/api/vue/admin/category/${category}`)
+            api.delete(`/api/vue/admin/category/${category}`)
                 .then(data =>{
                     this.getCategory()
                 })
@@ -76,7 +78,7 @@ export default {
 
         storeCategory(title){
             console.log(title)
-            axios.post(`/api/vue/admin/category`,{title: title})
+            api.post(`/api/vue/admin/category`,{title: title})
                 .then(data=>{
 
                     this.getCategory()

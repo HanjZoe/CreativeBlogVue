@@ -79,10 +79,10 @@
                         </div>
 
                         <div v-if="this.category_idError" class="text-danger m-2"> {{ this.category_idError }}</div>
-
+                        <div class="form-group w-50">
                         <label>Тэги</label>
                         <Select2 v-model="this.selectTags" :options="this.tags" :settings="{ multiple: true}" />
-
+                        </div>
 
                         <div v-if="this.tag_idsError" class="text-danger m-2"> {{ this.tag_idsError }}</div>
 
@@ -106,8 +106,7 @@
 import Dropzone from 'dropzone'
 import {VueEditor} from "vue3-editor";
 import router from "../../../../router/router";
-import axios from "axios";
-
+import api from "../../../../api";
 export default {
     name: "PostCreate",
     data() {
@@ -144,7 +143,7 @@ export default {
     },
     methods: {
         getPost() {
-            axios.get(`/api/vue/admin/post/${this.$route.params.id}`).then(data => {
+            api.get(`/api/vue/admin/post/${this.$route.params.id}`).then(data => {
 
                 this.newTitle = data.data.title
                 this.message = data.data.content
@@ -186,7 +185,7 @@ export default {
                 data.append('tag_ids[]', parseInt(tag))
             })
 
-            axios.post(`/api/vue/admin/post/${this.$route.params.id}`, data).then(data => {
+            api.post(`/api/vue/admin/post/${this.$route.params.id}`, data).then(data => {
                     router.push({name: "post.index"})
                 }
             ).catch(data => {
@@ -201,7 +200,7 @@ export default {
             })
         },
         getCategory() {
-            axios.get('/api/vue/admin/category').then(data => {
+            api.get('/api/vue/admin/category').then(data => {
 
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
@@ -214,7 +213,7 @@ export default {
             })
         },
         getTag() {
-            axios.get('/api/vue/admin/tag').then(data => {
+            api.get('/api/vue/admin/tag').then(data => {
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
                         element.deleted_at = 0;
@@ -282,4 +281,14 @@ export default {
 .dz-error-mark {
     display: none;
 }
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {    background-color: #495057;
+    color: #fff;}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {    background-color: #495057 !important;
+    color: white;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {    background-color: #007bff !important;
+    color: #fff;    border: 1px solid #007bff !important;
+}.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+     color: #fff !important;
+ }.select2-container--default.select2-container--focus .select2-selection--multiple {
+      border: 1px solid #ced4da !important;}
 </style>

@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import api from "../../api";
 import PostShow from "../Pages/Admin/Posts/PostShow";
 export default {
     name: "MyPostGrid",
@@ -88,7 +89,7 @@ export default {
     },
     methods: {
         getPosts(){
-            axios.get('/api/vue/admin/post').then(data =>{
+            api.get('/api/vue/admin/post').then(data =>{
                     console.log(data)
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
@@ -101,7 +102,7 @@ export default {
             })
         },
         deletePost(post){
-            axios.delete(`/api/vue/admin/post/${post}`)
+            api.delete(`/api/vue/admin/post/${post}`)
                 .then(data =>{
                     this.getPosts()
                 })

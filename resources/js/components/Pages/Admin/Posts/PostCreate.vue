@@ -79,17 +79,15 @@
                         </div>
 
                         <div v-if="this.category_idError" class="text-danger m-2"> {{ this.category_idError }}</div>
-
-                        <label>Тэги</label>
-                        <Select2 v-model="this.selectTags" :options="this.tags" :settings="{ multiple: true}" />
-
+                        <div class="form-group w-50">
+                            <label>Тэги</label>
+                            <Select2 v-model="this.selectTags" :options="this.tags" :settings="{ multiple: true}"/>
+                        </div>
 
                         <div v-if="this.tag_idsError" class="text-danger m-2"> {{ this.tag_idsError }}</div>
 
                         <div class="form-group">
-
-<!--                            :disabled="!isDisabled"-->
-                            <button href="#" @click.prevent="store()" class="btn btn-primary" >
+                            <button href="#" @click.prevent="store()" class="btn btn-primary"  :disabled="!isDisabled">
                                 Добавить
                             </button>
                         </div>
@@ -108,7 +106,7 @@
 import Dropzone from 'dropzone'
 import {VueEditor} from "vue3-editor";
 import router from "../../../../router/router";
-
+import api from "../../../../api";
 export default {
     name: "PostCreate",
     data() {
@@ -158,13 +156,13 @@ export default {
                 data.append('tag_ids[]', parseInt(tag))
             })
             console.log(data.title);
-            axios.post('/api/vue/admin/post/store', data).then(data => {
+            api.post('/api/vue/admin/post/store', data).then(data => {
                     router.push({name: "post.index"})
                 }
             ).catch(data => {
 
                 this.titleError = data.response.data.errors && data.response.data.errors.title ? data.response.data.errors.title[0] : null;
-                this.contentError =  data.response.data.errors && data.response.data.errors.content ? data.response.data.errors.content[0] : null;
+                this.contentError = data.response.data.errors && data.response.data.errors.content ? data.response.data.errors.content[0] : null;
                 this.preview_imageError = data.response.data.errors && data.response.data.errors.preview_image ? data.response.data.errors.preview_image[0] : null;
                 this.main_imageError = data.response.data.errors && data.response.data.errors.main_image ? data.response.data.errors.main_image[0] : null;
                 this.category_idError = data.response.data.errors && data.response.data.errors.category_id ? data.response.data.errors.category_id[0] : null;
@@ -172,7 +170,7 @@ export default {
             })
         },
         getCategory() {
-            axios.get('/api/vue/admin/category').then(data => {
+            api.get('/api/vue/admin/category').then(data => {
 
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
@@ -185,7 +183,7 @@ export default {
             })
         },
         getTag() {
-            axios.get('/api/vue/admin/tag').then(data => {
+            api.get('/api/vue/admin/tag').then(data => {
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
                         element.deleted_at = 0;
@@ -247,5 +245,29 @@ export default {
 .dz-success-mark,
 .dz-error-mark {
     display: none;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #495057 !important;
+    color: white;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #007bff !important;
+    color: #fff;
+    border: 1px solid #007bff !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #ced4da !important;
 }
 </style>

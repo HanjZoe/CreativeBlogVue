@@ -15,6 +15,7 @@ import Select2Wrapper from "./Select2Wrapper"
 import AdminNavBar from "./AdminNavBar";
 import PostShow from "../Pages/Admin/Posts/PostShow";
 import Select2 from 'vue3-select2-component';
+import MainePageHeader from "./MainePageHeader";
 
 export default [
     MyNavBar,
@@ -34,6 +35,7 @@ export default [
     AdminNavBar,
     PostShow,
     Select2,
+    MainePageHeader,
 ]
 // import Vue from 'vue';
 //

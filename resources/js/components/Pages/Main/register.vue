@@ -11,7 +11,8 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">Имя</label>
 
                             <div class="col-md-6">
-                                <my-input :placeholder = "placeholder_name" v-model = "name" type="text" class="form-control  " :class="{ 'is-invalid' :errorName}"  />
+                                <my-input :placeholder="placeholder_name" v-model="name" type="text"
+                                          class="form-control  " :class="{ 'is-invalid' :errorName}"/>
 
 
                                 <span v-if="errorName" class="invalid-feedback" role="alert">
@@ -25,8 +26,9 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
 
                             <div class="col-md-6">
-                                <my-input  :placeholder = "placeholder_email" v-model = "email" type="email" class="form-control  " :class="{ 'is-invalid' :errorEmail}"
-                                           autocomplete="email" />
+                                <my-input :placeholder="placeholder_email" v-model="email" type="email"
+                                          class="form-control  " :class="{ 'is-invalid' :errorEmail}"
+                                          autocomplete="email"/>
 
 
                                 <span v-if="errorEmail" class="invalid-feedback" role="alert">
@@ -40,7 +42,8 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">Пароль</label>
 
                             <div class="col-md-6">
-                                <my-input :placeholder = "placeholder_password" v-model = "password" type="password" class="form-control  " :class="{ 'is-invalid' :errorPassword}"  />
+                                <my-input :placeholder="placeholder_password" v-model="password" type="password"
+                                          class="form-control  " :class="{ 'is-invalid' :errorPassword}"/>
 
 
                                 <span v-if="errorPassword" class="invalid-feedback" role="alert">
@@ -55,13 +58,14 @@
                                 пароль</label>
 
                             <div class="col-md-6">
-                                <my-input  :placeholder = "placeholder_password_confirmation" v-model = "password_confirmation" type="password" class="form-control" />
+                                <my-input :placeholder="placeholder_password_confirmation"
+                                          v-model="password_confirmation" type="password" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button @click.prevent ="store()" type="submit" class="btn btn-primary">
+                                <button @click.prevent="store()" type="submit" class="btn btn-primary">
                                     Регистрация
                                 </button>
                             </div>
@@ -77,8 +81,8 @@
 <script>
 export default {
     name: "register",
-    data(){
-        return{
+    data() {
+        return {
             name: null,
             email: null,
             password: null,
@@ -95,19 +99,51 @@ export default {
 
 
     },
-    methods:{
-        store(){
-            axios.post('/api/vue/user/reg' ,{name: this.name,email: this.email,password: this.password, password_confirmation:this.password_confirmation})
-            .then(data => {
-
-              localStorage.setItem('access_token', data.data.access_token)
-            }).catch(data =>{
+    methods: {
+        store() {
+            axios.post('/api/vue/user/reg', {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.password_confirmation
+            })
+                .then(data => {
+                    localStorage.setItem('access_token', data.data)
+                    document.location.href = '/vue'
+                }).catch(data => {
                 this.errorName = data.response.data.errors && data.response.data.errors.name ? data.response.data.errors.name[0] : null;
-                this.errorEmail =  data.response.data.errors && data.response.data.errors.email ? data.response.data.errors.email[0] : null;
+                this.errorEmail = data.response.data.errors && data.response.data.errors.email ? data.response.data.errors.email[0] : null;
                 this.errorPassword = data.response.data.errors && data.response.data.errors.password ? data.response.data.errors.password[0] : null;
 
             })
-        }
+        },
+
+        // initApi() {
+        //     const api = axios.create();
+        //     api.interceptors.request.use(config => {
+        //         if(localStorage.getItem('access_token')) {
+        //             config.headers = {
+        //                 'authorization': `Bearer ${localStorage.getItem('access_token')}`
+        //             }
+        //         }
+        //         return config
+        //     }, error => {
+        //
+        //     })
+        //     api.interceptors.response.use(config => {
+        //         if(localStorage.getItem('access_token')) {
+        //             config.headers = {
+        //                 'authorization': `Bearer ${localStorage.getItem('access_token')}`
+        //             }
+        //         }
+        //         return config
+        //     },error => {
+        //     if(error.response.status === 401){
+        //         this.$router.push({name: "user.login"})
+        //     }
+        //     })
+        //     this.api = api
+        // }
     }
 }
 </script>

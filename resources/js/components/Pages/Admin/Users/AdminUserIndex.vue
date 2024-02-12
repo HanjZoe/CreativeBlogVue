@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import api from "../../../../api";
 export default {
     data(){
         return{
@@ -49,7 +50,7 @@ export default {
     },
    methods:{
        getUsers(){
-           axios.get('/api/vue/admin/users/')
+           api.get('/api/vue/admin/users/')
                .then(data => {
                    console.log(data)
                    data.data.users.forEach((element) => {
@@ -64,7 +65,7 @@ export default {
        },
        updateUser(id, newName, newEmail, newRole){
            console.log(id,newName,newEmail,newRole)
-         axios.patch(`/api/vue/admin/users/${id}`,{name: newName, email: newEmail, role: newRole,user_id: id}).then(data => {
+         api.patch(`/api/vue/admin/users/${id}`,{name: newName, email: newEmail, role: newRole,user_id: id}).then(data => {
              console.log(data)
              this.getUsers()
          }).catch(data=>{
@@ -72,7 +73,7 @@ export default {
          })
        },
        deleteUser(user){
-         axios.delete(`/api/vue/admin/users/${user}`)
+         api.delete(`/api/vue/admin/users/${user}`)
            .then(data =>{
                 this.getUsers()
                console.log(data)
@@ -80,7 +81,7 @@ export default {
            .catch()
        },
        storeUser(email, name, role){
-           axios.post(`/api/vue/admin/users`,{email: email, name:name, role:role})
+           api.post(`/api/vue/admin/users`,{email: email, name:name, role:role})
                .then(data=>{
                    this.getUsers()
                })

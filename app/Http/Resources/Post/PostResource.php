@@ -30,6 +30,7 @@ class PostResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'tags' => TagResource::collection($this->tags),
             'comments' => CommentsResource::collection($this->comments),
+            'likes' => count(Like::collection($this->likedUsers)),
         ];
     }
 }

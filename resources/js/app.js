@@ -47,6 +47,7 @@ components.forEach(component => {
     app.component(component.name, component)
 })
  app.component('index-component', 'IndexComponent');
+ //app.component('api', 'API');
 
 app
     .use(router)

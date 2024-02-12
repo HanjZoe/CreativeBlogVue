@@ -16,7 +16,7 @@ class StoreController extends Controller
         $password =  $data['password'];
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
-       $token = auth()->attempt(['email' => $user->email, 'password' => $password]);
+        $token = auth()->attempt(['email' => $user->email, 'password' => $password]);
        // $token = (new JWTAuth)->fromUser($auth);
        //
         //$token = auth()->attempt($user);

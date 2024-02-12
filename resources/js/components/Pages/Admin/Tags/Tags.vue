@@ -30,6 +30,7 @@
     </div>
 </template>
 <script>
+import api from "../../../../api";
 export default {
     name: "Tag",
     data() {
@@ -45,7 +46,7 @@ export default {
     },
     methods: {
         getTag(){
-            axios.get('/api/vue/admin/tag').then(data =>{
+            api.get('/api/vue/admin/tag').then(data =>{
 
                     data.data.forEach((element) => {
                         element.created_at = new Date(element.created_at).toLocaleString();
@@ -58,7 +59,7 @@ export default {
             })
         },
         updateTag(id, newTitle){
-            axios.patch(`/api/vue/admin/tag/${id}`,{title: newTitle})
+            api.patch(`/api/vue/admin/tag/${id}`,{title: newTitle})
                 .then(data => {
                     this.getTag()
                 }).catch(function (e){
@@ -66,7 +67,7 @@ export default {
             })
         },
         deleteTag(Tag){
-            axios.delete(`/api/vue/admin/tag/${Tag}`)
+            api.delete(`/api/vue/admin/tag/${Tag}`)
                 .then(data =>{
                     this.getTag()
                 })
@@ -77,7 +78,7 @@ export default {
 
         storeTag(title){
             console.log(title)
-            axios.post(`/api/vue/admin/tag`,{title: title})
+            api.post(`/api/vue/admin/tag`,{title: title})
                 .then(data=>{
 
                     this.getTag()

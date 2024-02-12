@@ -72,6 +72,7 @@ export default {
           axios.post('/api/auth/login' ,{email: this.email, password: this.password})
               .then(data => {
                   localStorage.setItem('access_token', data.data.access_token)
+                  document.location.href = '/vue'
               }).catch(data =>{
               this.errorEmail =  data.response.data.errors && data.response.data.errors.email ? data.response.data.errors.email[0] : null;
               this.errorPassword = data.response.data.errors && data.response.data.errors.password ? data.response.data.errors.password[0] : null;
