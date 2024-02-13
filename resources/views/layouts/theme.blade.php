@@ -12,7 +12,6 @@
     <script src="{{asset('assets/vendors/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/loader.js')}}"></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body>

@@ -32,7 +32,7 @@ api.interceptors.response.use(config => {
     }
     if (error.response.status === 401) {
         // router.push({name: "user.login"})
-        document.location.href = '/vue/login'
+        document.location.href = '/login'
     }
 })
 export default api

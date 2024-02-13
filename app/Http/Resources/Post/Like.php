@@ -15,8 +15,7 @@ class Like extends JsonResource
     public function toArray($request)
     {
         return [
-            'count' => $this->user_id,
-            'user_id' => $this->post_id
+            'user' => $this->id
         ];
     }
 }

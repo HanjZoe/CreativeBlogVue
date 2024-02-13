@@ -21,67 +21,67 @@ const router = createRouter({
 
     routes: [
         {
-            path: '/vue/admin/users',
+            path: '/admin/users',
             component: AdminUser,
             name: 'admin.user',
         },
         {
-            path: '/vue/admin/category',
+            path: '/admin/category',
             component: Category,
             name: 'admin.category',
         },
         {
-            path: '/vue/admin/tag',
+            path: '/admin/tag',
             component: Tag,
             name: 'admin.tag',
         },
         {
-            path: '/vue/admin/post',
+            path: '/admin/post',
             component: PostsIndex,
             name: 'post.index'
         },
         {
-            path: '/vue/admin/post/create',
+            path: '/admin/post/create',
             component: PostCreate,
             name: 'post.create'
         },
         {
-            path: '/vue/admin/post/:id/edit',
+            path: '/admin/post/:id/edit',
             component: PostEdit,
             name: 'post.edit'
         },
         {
-            path: '/vue/login',
+            path: '/login',
             component: login,
             name: 'user.login',
         },
         {
-            path: '/vue/registration',
+            path: '/registration',
             component: register,
             name: 'user.registration',
         },
         {
-            path: '/vue/personal',
+            path: '/personal',
             component: Personal,
             name: 'personal.index'
         },
         {
-            path: '/vue/admin',
+            path: '/admin',
             component: Admin,
             name: 'admin.index'
         },
         {
-            path: '/vue',
+            path: '/',
             component: Index,
             name: 'main.index'
         },
         {
-            path: '/vue/:id',
+            path: '/:id',
             component: Show,
             name: 'main.post'
         },
         {
-            path: '/vue/category:id',
+            path: '/category:id',
             component: CategoryPage,
             name: 'main.category'
         },
@@ -101,13 +101,13 @@ router.beforeEach((to, from, next) => {
             return next()
         } else {
             return next({
-                path: '/vue/login'
+                path: '/login'
             })
         }
     }
     if (accessToken && to.name === 'user.login' || to.name === 'user.registration') {
         return next({
-            path: '/vue/personal'
+            path: '/personal'
         })
     }
     next();

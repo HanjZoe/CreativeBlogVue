@@ -28,7 +28,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
     Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function () {
         Route::group(['namespace' => 'Main', 'prefix' => 'main'], function () {
-            Route::get('/posts', 'IndexController');
+            Route::post('/posts', 'IndexController');
+            Route::get('/user', 'IndexController@user')->middleware('api');
         });
     });
 

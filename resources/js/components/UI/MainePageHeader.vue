@@ -3,7 +3,9 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="navbar-brand" href="/"><img src="/assets/images/logo.svg" alt="Edica"></a>
-                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#edicaMainNav" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                        data-target="#edicaMainNav" aria-controls="collapsibleNavId" aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -12,28 +14,26 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="/">Блог <span class="sr-only">(current)</span></a>
                         </li>
-                        //if
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/vue/login">Войти</a>
+
+                        <li v-if="!userName" class="nav-item">
+                            <a class="nav-link" href="/login">Войти</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/vue/registration">Регистрация</a>
+                        <li v-if="!userName" class="nav-item">
+                            <a class="nav-link" href="/registration">Регистрация</a>
                         </li>
 
-                      //else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="/vue/personal" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                имя пользователя
+                        <li v-if="userName" class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ userName.name }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                               // if
-                                <a class="dropdown-item" href="/vue/admin">
+
+                                <a v-if="userRole === 0" class="dropdown-item" href="/admin">
                                     Админ панель
                                 </a>
-                              // endif
-                                <a class="dropdown-item" href="/vue/personal'">
+                                <a class="dropdown-item" href="/personal'">
                                     Личный кабинет
                                 </a>
                                 <a class="dropdown-item" href="#"
@@ -48,7 +48,6 @@
 
                             </div>
                         </li>
-                       // endif
                     </ul>
                 </div>
             </nav>
@@ -58,8 +57,15 @@
 
 <script>
 export default {
-    name: "MainePageHeader"
+    name: "MainePageHeader",
+    props: {
+        userName: null,
+    },
+    mounted() {
+
+    }
 }
+
 </script>
 
 <style>
