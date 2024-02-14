@@ -6,7 +6,7 @@ PHP 7.4.33
 
 mariadb 10.8
 
-nmp 10.2.3
+npm 10.2.3
 
 ##  <a id="title2">Порядок действий  </a>
 Переименовать .env.example в .env
@@ -18,7 +18,7 @@ nmp 10.2.3
 ```
 composer install
 
-nmp install 
+npm install 
 
 npm run dev 
 
