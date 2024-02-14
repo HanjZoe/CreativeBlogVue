@@ -15,7 +15,7 @@
                         <p v-if = "post.category" class="blog-post-category">{{post.category.title}}</p>
 
 
-                        <form v-if = "this.userName" action="" method="post">
+                        <a v-if = "this.userName" href="" @click.prevent="setLike(post.id)">
                             <span >
                                         {{post.like_count}}
                                     </span>
@@ -24,7 +24,7 @@
 
 
                             </button>
-                        </form>
+                        </a>
                         <div v-if="!this.userName">
                                             <span class=" border-0 bg-transparent">
                                         {{post.like_count}}
@@ -73,7 +73,7 @@
                                     <img :src="randomPost.url_preview_image" alt="blog post">
                                 </div>
                                 <p v-if ="randomPost.category" class="blog-post-category">{{randomPost.category.title}}</p>
-                                <form v-if="this.userName" action="" method="post">
+                                <a v-if = "this.userName" href="" @click.prevent="setLike(randomPost.id)">
                             <span>
                                         {{randomPost.like_count}}
                                     </span>
@@ -81,7 +81,7 @@
                                         <i :class="randomPost.likes.find(obj => obj.user === this.userName.id) ? 'fas fa-heart' : 'far fa-heart'"></i>
 
                                     </button>
-                                </form>
+                                </a>
                                 <div v-if="!this.userName">
                                             <span class=" border-0 bg-transparent">
                                         {{randomPost.like_count}}
@@ -110,7 +110,7 @@
 
                                         </h6>
 
-                                        <form v-if="this.userName" action="" method="post">
+                                        <a v-if = "this.userName" href="" @click.prevent="setLike(likedPost.id)">
                             <span>
                                         {{likedPost.like_count}}
 
@@ -120,7 +120,7 @@
 
                                                 <i :class="likedPost.likes.find(obj => obj.user === this.userName.id) ? 'fas fa-heart' : 'far fa-heart'"></i>
                                             </button>
-                                        </form>
+                                        </a>
                                         <div v-if="!this.userName">
                                             <span class=" border-0 bg-transparent">
                                         {{likedPost.like_count}}
@@ -138,7 +138,7 @@
                         <ul v-if="this.categories">
 
                             <li v-for ="category in this.categories">
-                                <a class="widget-title" href="#">{{category.title}}</a>
+                                <router-link :to="{ name: 'main.category', params: { id: category.id }}" class="widget-title" >{{category.title}}</router-link>
                             </li>
 
                         </ul>
@@ -174,7 +174,8 @@ data(){
       links: null,
       categories: null,
       randomPosts: null,
-      likedPosts: null
+      likedPosts: null,
+      post_like: null,
 
   }
 },
@@ -194,8 +195,6 @@ data(){
                 this.links = this.pagination.links
                 this.currentPage = data.data.meta.current_page;
                 this.lastPage = data.data.meta.last_page;
-                console.log(this.posts[0].likes.find(obj => obj.user === 33))
-                this.posts[0].likes.forEach((element) => {console.log(element)})
             }).catch(function (e){
                 console.log(e)
             })
@@ -210,6 +209,13 @@ data(){
             }).catch(function (e){
                 console.log(e)
             })
+        },
+        setLike(post){
+            api.post(`/api/vue/main/${post}/likes`).then(() => {
+                this.get()
+                this.getSome()
+            })
+
         }
     },
 

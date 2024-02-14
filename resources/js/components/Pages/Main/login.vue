@@ -71,6 +71,7 @@ export default {
       login(){
           axios.post('/api/auth/login' ,{email: this.email, password: this.password})
               .then(data => {
+                  console.log(data)
                   localStorage.setItem('access_token', data.data.access_token)
                   document.location.href = '/'
               }).catch(data =>{

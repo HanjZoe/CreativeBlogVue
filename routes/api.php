@@ -29,13 +29,31 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::group(['namespace' => 'Vue', 'prefix' => 'vue'], function () {
         Route::group(['namespace' => 'Main', 'prefix' => 'main'], function () {
             Route::post('/posts', 'IndexController');
+            Route::post('/post/{post}', 'IndexController@show');
+            Route::post('/category/{category}', 'IndexController@categry');
             Route::get('/user', 'IndexController@user')->middleware('api');
+
+                Route::group(['prefix'=>'{post}/likes'], function (){
+            Route::post('/', 'IndexController@like')->middleware('auth:api');
         });
+
+            Route::group(['prefix'=>'{post}/comments'], function () {
+                Route::post('/', 'IndexController@comment')->middleware('jwt.auth');
+        });
+        });
+        Route::group(['namespace' => 'Personal', 'prefix' => 'personal'], function () {
+            Route::post('/', 'IndexContrller')->middleware('jwt.auth');
+            Route::post('/like', 'LikeController')->middleware('jwt.auth');
+            Route::delete('/like/{post}', 'LikeController@delete')->middleware('jwt.auth');
+            Route::post('/comment', 'CommentController')->middleware('jwt.auth');
+            Route::delete('/comment/{comment}', 'CommentController@delete')->middleware('jwt.auth');
+            Route::patch('/comment/{comment}', 'CommentController@update')->middleware('jwt.auth');
+    });
     });
 
 
 Route::group(['namespace' => 'Post', 'prefix' => 'posts'], function () {
-    Route::group(['namespace' => 'Like', 'prefix'=>'{post}/Alikes'], function (){
+    Route::group(['namespace' => 'Like', 'prefix'=>'{post}/likes'], function (){
         Route::post('/','StoreController')->name('post.Alike.store');
     });
 });

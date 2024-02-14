@@ -100,7 +100,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('{page}', 'IndexController')->name('vue.admin.main.index');
 
 
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('{page}', 'IndexController')->name('vue.admin.main.index')->where('page','.*')->middleware('api');

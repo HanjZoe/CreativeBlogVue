@@ -45,7 +45,7 @@
                             <div class="inner">
                                 <h3>{{$data["comments"]}}</h3>
 
-                                <p>Комментарии</p>
+                                <p>Понравившиеся посты<</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-comments"></i>

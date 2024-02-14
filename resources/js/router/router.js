@@ -11,6 +11,8 @@ import Admin from "../components/Pages/Admin/Admin";
 import Index from "../components/Pages/Main/Index";
 import Show from "../components/Pages/Main/Show";
 import CategoryPage from "../components/Pages/Main/Category";
+import Like from "../components/Pages/Personal/Like";
+import Comment from "../components/Pages/Personal/Comment";
 
 // import AdminMain from "@/views/SinglePostPage"
 
@@ -81,9 +83,19 @@ const router = createRouter({
             name: 'main.post'
         },
         {
-            path: '/category:id',
+            path: '/category/:id',
             component: CategoryPage,
             name: 'main.category'
+        },
+        {
+            path: '/personal/like',
+            component: Like,
+            name: 'personal.like'
+        },
+        {
+            path: '/personal/comment',
+            component: Comment,
+            name: 'personal.comment'
         },
         {
             path: '/:catchAll(.*)',

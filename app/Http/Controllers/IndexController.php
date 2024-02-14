@@ -10,17 +10,21 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
-        $user = false;
+        $personal = false;
         if(strpos(url()->current(), 'login') || strpos(url()->current(), 'registration')){
             $layout = 'layouts.app';
-            } elseif (strpos(url()->current(), 'admin') || strpos(url()->current(), 'personal')) {
+            } elseif (strpos(url()->current(), 'admin')){
             $layout = 'Admin.layouts.theme';
+
+        } elseif (strpos(url()->current(), 'personal')) {
+            $layout = 'Admin.layouts.theme';
+            $personal = true;
         } else {
             $layout = 'layouts.theme';
-            $user = Auth::guard('api')->user();
+
         }
 
-        return view('Vue.Admin.Main.index',compact('layout','user'));
+        return view('Vue.Admin.Main.index',compact('layout','personal'));
     }
 
 }
